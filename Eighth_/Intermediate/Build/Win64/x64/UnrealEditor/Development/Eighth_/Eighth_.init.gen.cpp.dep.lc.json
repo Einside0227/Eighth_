@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\unrealeditor\\inc\\eighth_\\uht\\eighth_.init.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\x64\\eighth_editor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\eighth_\\definitions.eighth_.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\source\\eighth_\\private\\spartagamemode.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\x64\\eighth_editor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\eighth_\\definitions.eighth_.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\source\\eighth_\\public\\spartagamemode.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemode.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemode.generated.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\unrealeditor\\inc\\eighth_\\uht\\spartagamemode.generated.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\source\\eighth_\\public\\spartacharacter.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\gameframework\\character.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\gameframework\\charactermovementreplication.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\net\\core\\public\\net\\core\\nettoken\\nettokenexportcontext.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\experimental\\iris\\core\\public\\iris\\serialization\\irisobjectreferencepackagemap.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\iriscore\\uht\\irisobjectreferencepackagemap.generated.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\charactermovementreplication.generated.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\engine\\classes\\gameframework\\rootmotionsource.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\rootmotionsource.generated.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\character.generated.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\unrealeditor\\inc\\eighth_\\uht\\spartacharacter.generated.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\source\\eighth_\\public\\spartaplayercontroller.h",
+            "c:\\users\\30166\\documents\\github\\eighth_\\eighth_\\intermediate\\build\\win64\\unrealeditor\\inc\\eighth_\\uht\\spartaplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
