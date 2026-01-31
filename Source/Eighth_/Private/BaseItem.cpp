@@ -1,24 +1,50 @@
 #include "BaseItem.h"
+#include "Components/SphereComponent.h"
 
 ABaseItem::ABaseItem()
 {
-    PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = false;
 
+    Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+    SetRootComponent(Scene);
+    
+    Collision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
+    Collision->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+    Collision->SetupAttachment(Scene);
+
+    StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+    StaticMesh->SetupAttachment(Collision);
+
+	Collision->OnComponentBeginOverlap.AddDynamic(this, &ABaseItem::OnItemOverlap);
+	Collision->OnComponentEndOverlap.AddDynamic(this, &ABaseItem::OnItemEndOverlap);
 }
 
-void ABaseItem::OnItemOverlap(AActor* OverlapActor)
+void ABaseItem::OnItemOverlap(
+	UPrimitiveComponent* OverlappedComp,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
 {
-	// 기본은 빈 함수 - 각 자식 클래스에서 구현
+	if (OtherActor && OtherActor->ActorHasTag("Player"))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Overlap!!!")));
+		ActivateItem(OtherActor);
+	}
 }
 
-void ABaseItem::OnItemEndOverlap(AActor* OverlapActor)
+void ABaseItem::OnItemEndOverlap(
+	UPrimitiveComponent* OverlappedComp,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex)
 {
-	// 기본은 빈 함수 - 필요하다면 자식 클래스에서 활용
 }
 
 void ABaseItem::ActivateItem(AActor* Activator)
 {
-	// 기본은 빈 함수 - 자식 클래스에서 구현
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Overlap!!")));
 }
 
 FName ABaseItem::GetItemType() const

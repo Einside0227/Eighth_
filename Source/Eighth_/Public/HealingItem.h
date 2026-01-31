@@ -2,20 +2,18 @@
 
 #include "CoreMinimal.h"
 #include "BaseItem.h"
-#include "CoinItem.generated.h"
-
+#include "HealingItem.generated.h"
 
 UCLASS()
-class EIGHTH__API ACoinItem : public ABaseItem
+class EIGHTH__API AHealingItem : public ABaseItem
 {
 	GENERATED_BODY()
-
+	
 public:
-	ACoinItem();
+	AHealingItem();
 
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	int32 PointValue;
+	int32 HealAmount;
 
 	virtual void ActivateItem(AActor* Activator) override;
 };
