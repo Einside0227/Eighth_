@@ -10,20 +10,20 @@
 
 ASpartaGameState::ASpartaGameState()
 {
-    Score = 0;
-    SpawnedCoinCount = 0;
-    CollectedCoinCount = 0;
+	Score = 0;
+	SpawnedCoinCount = 0;
+	CollectedCoinCount = 0;
 	LevelDuration = 30.0f;
 	CurrentLevelIndex = 0;
 	MaxLevels = 3;
 }
 
-void ASpartaGameState::BeginPlay() 
+void ASpartaGameState::BeginPlay()
 {
-    Super::BeginPlay();
+	Super::BeginPlay();
 
 	UpdateHUD();
-    StartLevel();
+	StartLevel();
 
 	GetWorldTimerManager().SetTimer(
 		HUDUpdateTimerHandle,
@@ -36,14 +36,14 @@ void ASpartaGameState::BeginPlay()
 
 int32 ASpartaGameState::GetScore() const
 {
-    return Score;
+	return Score;
 }
 
 void ASpartaGameState::AddScore(int32 Amount)
 {
-	if (UGameInstance * GameInstance = GetGameInstance()) 
+	if (UGameInstance* GameInstance = GetGameInstance())
 	{
-		USpartaGameInstance* SpartaGameInstance = Cast< USpartaGameInstance>(GameInstance);
+		USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);
 		if (SpartaGameInstance)
 		{
 			SpartaGameInstance->AddToScore(Amount);
@@ -55,20 +55,20 @@ void ASpartaGameState::StartLevel()
 {
 	if (UGameInstance* GameInstance = GetGameInstance())
 	{
-		USpartaGameInstance* SpartaGameInstance = Cast< USpartaGameInstance>(GameInstance);
+		USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);
 		if (SpartaGameInstance)
 		{
 			CurrentLevelIndex = SpartaGameInstance->CurrentLevelIndex;
 		}
 	}
 
-    SpawnedCoinCount = 0;
-    CollectedCoinCount = 0;
+	SpawnedCoinCount = 0;
+	CollectedCoinCount = 0;
 
-    TArray<AActor*> FoundVolumes;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
+	TArray<AActor*> FoundVolumes;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
 
-    const int32 ItemToSpawn = 40;
+	const int32 ItemToSpawn = 40;
 
 	for (int32 i = 0; i < ItemToSpawn; i++)
 	{
@@ -94,31 +94,20 @@ void ASpartaGameState::StartLevel()
 	);
 
 	UpdateHUD();
-
-	UE_LOG(LogTemp, Warning, TEXT("Level %d Start!, Spawned %d coin"),
-		CurrentLevelIndex + 1,
-		SpawnedCoinCount);
 }
 
 void ASpartaGameState::OnLevelTimeUp()
 {
-	// 시간이 다 되면 레벨을 종료
 	EndLevel();
 }
 
 void ASpartaGameState::OnCoinCollected()
 {
 	CollectedCoinCount++;
-
-	UE_LOG(LogTemp, Warning, TEXT("Coin Collected: %d / %d"),
-		CollectedCoinCount,
-		SpawnedCoinCount)
-
-		// 현재 레벨에서 스폰된 코인을 전부 주웠다면 즉시 레벨 종료
-		if (SpawnedCoinCount > 0 && CollectedCoinCount >= SpawnedCoinCount)
-		{
-			EndLevel();
-		}
+	if (SpawnedCoinCount > 0 && CollectedCoinCount >= SpawnedCoinCount)
+	{
+		EndLevel();
+	}
 }
 
 void ASpartaGameState::EndLevel()
@@ -127,7 +116,7 @@ void ASpartaGameState::EndLevel()
 
 	if (UGameInstance* GameInstance = GetGameInstance())
 	{
-		USpartaGameInstance* SpartaGameInstance = Cast< USpartaGameInstance>(GameInstance);
+		USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);
 		if (SpartaGameInstance)
 		{
 			AddScore(Score);
@@ -136,20 +125,18 @@ void ASpartaGameState::EndLevel()
 		}
 	}
 
-	// 모든 레벨을 다 돌았다면 게임 오버 처리
 	if (CurrentLevelIndex >= MaxLevels)
 	{
 		OnGameOver();
 		return;
 	}
-	// 레벨 맵 이름이 있다면 해당 맵 불러오기
+
 	if (LevelMapNames.IsValidIndex(CurrentLevelIndex))
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), LevelMapNames[CurrentLevelIndex]);
 	}
 	else
 	{
-		// 맵 이름이 없으면 게임오버
 		OnGameOver();
 	}
 }
@@ -157,14 +144,13 @@ void ASpartaGameState::EndLevel()
 void ASpartaGameState::OnGameOver()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game Over!!"));
-	// 여기서 UI를 띄운다거나, 재시작 기능을 넣을 수도 있음
 }
 
-void ASpartaGameState::UpdateHUD() 
+void ASpartaGameState::UpdateHUD()
 {
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
-		if (ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController))
+		ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController);
 		{
 			if (UUserWidget* HUDWidget = SpartaPlayerController->GetHUDWidget())
 			{
@@ -190,8 +176,22 @@ void ASpartaGameState::UpdateHUD()
 				{
 					LevelIndexText->SetText(FText::FromString(FString::Printf(TEXT("Level %d"), CurrentLevelIndex + 1)));
 				}
+
+				if (UTextBlock* CoinText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Coin"))))
+				{
+					CoinText->SetText(FText::FromString(FString::Printf(TEXT("Coin : %d / %d"), CollectedCoinCount, SpawnedCoinCount)));
+				}
+
+				if (UTextBlock* HPText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("HP"))))
+				{
+					ASpartaCharacter* SpartaCharacter = Cast<ASpartaCharacter>(SpartaPlayerController->GetPawn());
+					if (SpartaCharacter)
+					{
+						float CurrentHealth = SpartaCharacter->GetHealth();
+						HPText->SetText(FText::FromString(FString::Printf(TEXT("HP : %.0f"), CurrentHealth)));
+					}
+				}
 			}
 		}
-
 	}
 }
