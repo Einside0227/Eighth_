@@ -14,7 +14,7 @@ class EIGHTH__API ASpartaPlayerController : public APlayerController
 
 public:
 	ASpartaPlayerController();
-
+#pragma region Input
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* InputMappingContext;
 	
@@ -29,6 +29,16 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* SprintAction;
+#pragma endregion
+#pragma region HUD
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+	TSubclassOf<UUserWidget> HUDWidgetClass;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD")
+	UUserWidget* HUDWidgetInstance;
+
+	UFUNCTION(BlueprintPure, Category = "HUD")
+	UUserWidget* GetHUDWidget() const;
+#pragma endregion
 	virtual void BeginPlay() override;
 };

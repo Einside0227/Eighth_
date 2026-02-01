@@ -16,7 +16,7 @@ public:
 	ASpawnVolume();
 
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	void SpawnRandomItem();
+	AActor* SpawnRandomItem();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning")
 	USceneComponent* Scene;
@@ -29,5 +29,5 @@ public:
 
 	FVector GetRandomPointInVolume() const;
 	FItemSpawnRow* GetRandomItem() const;
-	void SpawnItem(TSubclassOf<AActor> ItemClass);
+	AActor* SpawnItem(TSubclassOf<AActor> ItemClass);
 };
