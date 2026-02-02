@@ -1,5 +1,4 @@
 #include "SpartaGameState.h"
-#include "SpartaCharacter.h"
 #include "SpartaGameInstance.h"
 #include "SpartaPlayerController.h"
 #include "SpawnVolume.h"
@@ -25,7 +24,6 @@ void ASpartaGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UpdateHUD();
 	StartLevel();
 
 	GetWorldTimerManager().SetTimer(
@@ -56,6 +54,14 @@ void ASpartaGameState::AddScore(int32 Amount)
 
 void ASpartaGameState::StartLevel()
 {
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		if (ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController))
+		{
+			SpartaPlayerController->ShowGameHUD();
+		}
+	}
+
 	if (UGameInstance* GameInstance = GetGameInstance())
 	{
 		USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);
@@ -114,12 +120,12 @@ void ASpartaGameState::OnCoinCollected()
 
 void ASpartaGameState::EndWave() {
 	GetWorldTimerManager().ClearTimer(LevelTimerHandle);
-	if (CurrentWaveIndex >= MaxWaves -1)
+
+	if (CurrentWaveIndex >= MaxWaves-1)
 	{
 		EndLevel();
 		return;
 	}
-	AddScore(Score);
 	ItemToSpawn -= 10;
 	LevelDuration -= 10;
 	CurrentWaveIndex++;
@@ -159,7 +165,14 @@ void ASpartaGameState::EndLevel()
 
 void ASpartaGameState::OnGameOver()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Game Over!!"));
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		if (ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController))
+		{
+			SpartaPlayerController->SetPause(true);
+			SpartaPlayerController->ShowMainMenu(true);
+		}
+	}
 }
 
 void ASpartaGameState::UpdateHUD()
@@ -201,16 +214,6 @@ void ASpartaGameState::UpdateHUD()
 				if (UTextBlock* CoinText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Coin"))))
 				{
 					CoinText->SetText(FText::FromString(FString::Printf(TEXT("Coin : %d / %d"), CollectedCoinCount, SpawnedCoinCount)));
-				}
-
-				if (UTextBlock* HPText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("HP"))))
-				{
-					ASpartaCharacter* SpartaCharacter = Cast<ASpartaCharacter>(SpartaPlayerController->GetPawn());
-					if (SpartaCharacter)
-					{
-						float CurrentHealth = SpartaCharacter->GetHealth();
-						HPText->SetText(FText::FromString(FString::Printf(TEXT("HP : %.0f"), CurrentHealth)));
-					}
 				}
 			}
 		}

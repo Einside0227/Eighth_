@@ -33,12 +33,28 @@ public:
 #pragma region HUD
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 	TSubclassOf<UUserWidget> HUDWidgetClass;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD")
 	UUserWidget* HUDWidgetInstance;
 
 	UFUNCTION(BlueprintPure, Category = "HUD")
 	UUserWidget* GetHUDWidget() const;
+
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void ShowGameHUD();
+#pragma endregion
+#pragma region Menu
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Menu")
+	TSubclassOf<UUserWidget> MainMenuWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Menu")
+	UUserWidget* MainMenuWidgetInstance;
+
+	UFUNCTION(BlueprintCallable, Category = "Menu")
+	void ShowMainMenu(bool bIsRestart);
+	UFUNCTION(BlueprintCallable, Category = "Menu")
+	void StartGame();
+	UFUNCTION(BlueprintCallable, Category = "Menu")
+	void EndGame();
 #pragma endregion
 	virtual void BeginPlay() override;
 };

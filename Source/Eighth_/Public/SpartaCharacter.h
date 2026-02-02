@@ -6,6 +6,7 @@
 
 class USpringArmComponent; 
 class UCameraComponent;
+class UWidgetComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -22,6 +23,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComp;
 #pragma endregion
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	UWidgetComponent* OverheadWidget;
 #pragma region Health
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealth() const;
@@ -37,10 +40,12 @@ protected:
 	float Health;
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void OnDeath();
+	void UpdateOverheadHP();
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 #pragma endregion
+	virtual void BeginPlay() override;
 #pragma region InputComponent
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
