@@ -29,6 +29,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
 	TArray<FName> LevelMapNames;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wave")
+	int32 CurrentWaveIndex;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wave")
+	int32 MaxWaves;
+
 	FTimerHandle LevelTimerHandle;
 	FTimerHandle HUDUpdateTimerHandle;
 
@@ -38,10 +43,13 @@ public:
 	void AddScore(int32 Amount);
 	UFUNCTION(BlueprintCallable, Category = "Level")
 	void OnGameOver();
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Item")
+	int32 ItemToSpawn;
 
 	void StartLevel();
 	void OnLevelTimeUp();
 	void OnCoinCollected();
+	void EndWave();
 	void EndLevel();
 	void UpdateHUD();
 };

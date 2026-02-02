@@ -1,5 +1,5 @@
-#include "SpartaCharacter.h"
 #include "SpartaGameState.h"
+#include "SpartaCharacter.h"
 #include "SpartaGameInstance.h"
 #include "SpartaPlayerController.h"
 #include "SpawnVolume.h"
@@ -16,6 +16,9 @@ ASpartaGameState::ASpartaGameState()
 	LevelDuration = 30.0f;
 	CurrentLevelIndex = 0;
 	MaxLevels = 3;
+	ItemToSpawn = 40;
+	CurrentWaveIndex = 0;
+	MaxWaves = 3;
 }
 
 void ASpartaGameState::BeginPlay()
@@ -68,7 +71,6 @@ void ASpartaGameState::StartLevel()
 	TArray<AActor*> FoundVolumes;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
 
-	const int32 ItemToSpawn = 40;
 
 	for (int32 i = 0; i < ItemToSpawn; i++)
 	{
@@ -98,7 +100,7 @@ void ASpartaGameState::StartLevel()
 
 void ASpartaGameState::OnLevelTimeUp()
 {
-	EndLevel();
+	EndWave();
 }
 
 void ASpartaGameState::OnCoinCollected()
@@ -106,8 +108,22 @@ void ASpartaGameState::OnCoinCollected()
 	CollectedCoinCount++;
 	if (SpawnedCoinCount > 0 && CollectedCoinCount >= SpawnedCoinCount)
 	{
-		EndLevel();
+		EndWave();
 	}
+}
+
+void ASpartaGameState::EndWave() {
+	GetWorldTimerManager().ClearTimer(LevelTimerHandle);
+	if (CurrentWaveIndex >= MaxWaves -1)
+	{
+		EndLevel();
+		return;
+	}
+	AddScore(Score);
+	ItemToSpawn -= 10;
+	LevelDuration -= 10;
+	CurrentWaveIndex++;
+	StartLevel();
 }
 
 void ASpartaGameState::EndLevel()
@@ -175,6 +191,11 @@ void ASpartaGameState::UpdateHUD()
 				if (UTextBlock* LevelIndexText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Level"))))
 				{
 					LevelIndexText->SetText(FText::FromString(FString::Printf(TEXT("Level %d"), CurrentLevelIndex + 1)));
+				}
+
+				if (UTextBlock* WaveIndexText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Wave"))))
+				{
+					WaveIndexText->SetText(FText::FromString(FString::Printf(TEXT("Wave %d"), CurrentWaveIndex + 1)));
 				}
 
 				if (UTextBlock* CoinText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Coin"))))
