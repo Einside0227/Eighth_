@@ -51,6 +51,7 @@ void AMineItem::Explode()
 			GetActorLocation()
 		);
 	}
+
     TArray<AActor*> OverlappingActors;
     ExplosionCollision->GetOverlappingActors(OverlappingActors);
 
